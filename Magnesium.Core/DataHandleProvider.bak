@@ -1,0 +1,131 @@
+﻿using Magnesium.Core.Extension;
+using Magnesium.Core.InnerDcp.SaltTiger;
+using Magnesium.Core.Web;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Magnesium.Core
+{
+    public class DataHandleProvider
+    {
+        private Dictionary<Guid, IDataCollectProvider> DcpList = new Dictionary<Guid, IDataCollectProvider>();
+
+        private List<Guid> AutoRunningList = new List<Guid>();
+
+        public DataHandleProvider()
+        {
+        }
+
+        public void RegisterDcp(IDataCollectProvider dcp)
+        {
+            if (DcpList.ContainsKey(dcp.GUID))
+            {
+                throw new MagnesiumException($"当前列表中已存在GUID为: {dcp.GUID}的DCP, 为了避免调用异常，请修改该DCP的GUID");
+            }
+            DcpList.Add(dcp.GUID, dcp);
+        }
+
+        /// <summary>
+        /// 从指定路径加载包含DCP的dll文件
+        /// </summary>
+        /// <param name="path">指定路径</param>
+        /// <returns>DCP对象</returns>
+        public IEnumerable<IDataCollectProvider> LoadDcp(string path)
+        {
+            //TODO [待完善]加载指定路径的dll, 需要处理异常
+
+            Assembly dcpAsb = null;
+            //从指定路径加载程序集
+            try
+            {
+                dcpAsb = Assembly.LoadFrom(path);
+            }
+            catch (BadImageFormatException)
+            {
+                return new IDataCollectProvider[0];
+            }
+
+            //生成实现了IDataCollectProvider接口的类的实例
+            var dcps = from type in dcpAsb.GetTypes()
+                       where type.GetInterfaces().Contains(typeof(IDataCollectProvider))
+                       select (IDataCollectProvider)Activator.CreateInstance(type);
+
+            return dcps;
+        }
+
+
+
+        public void LoadDcps(string dir)
+        {
+            //TODO 从指定目录加载DCP
+            //获取下的所有dll, 为了节省加载时间, 仅加载文件名以dcp结尾的dll文件
+            var dllPaths = Directory.EnumerateFiles(dir, "*dcp.dll", SearchOption.AllDirectories);
+
+            //分别加载各个dll中的DCP
+            var dcps = from dllPath in dllPaths
+                       from dcp in LoadDcp(dllPath)
+                       select dcp;
+            //注册所有DCP
+            dcps.ForEach(dcp => RegisterDcp(dcp));
+        }
+
+        public void LoadInnerDcps()
+        {
+            RegisterDcp(new SaltTigerDcp());
+        }
+
+        public void RequestHandler(DataRequest dr)
+        {
+            //TODO [待完善]异常处理
+            var dcp = DcpList[dr.GUID];
+            var dresp = dcp.SendHandler(dr);
+            Magnesium.Instance.ParseQueue.Post(dresp);
+        }
+
+        public void ParseHandler(DataResponse dresp)
+        {
+            //TODO [待完善]异常处理
+            var dcp = DcpList[dresp.GUID];
+            DataContainer dc;
+            try
+            {
+                dc = dcp.ParseHandler(dresp);
+            }
+            catch (ParseErrorException)
+            {
+                File.WriteAllText($@"error pages\{DateTime.Now.ToString("yyyy-MM-dd_HH.mm.ss.fffffff")}.html", dresp.Text);
+                return;
+            }
+            Magnesium.Instance.StoreQueue.Post(dc);
+        }
+
+        public void StoreHandler(DataContainer dc)
+        {
+            //TODO [待完善]异常处理
+            var dcp = DcpList[dc.GUID];
+            dcp.StoreHandler(dc);
+        }
+
+        public IEnumerable<IDataCollectProvider> GetDcps()
+        {
+            return DcpList.ForEach(item => item.Value);
+        }
+
+        public async Task RunAutoGenerator(Guid guid)
+        {
+            if (AutoRunningList.Contains(guid))
+            {
+                throw new MagnesiumException("该DCP已在自动运行中");
+            }
+            AutoRunningList.Add(guid);
+            var dcp = DcpList[guid];
+            await Task.Run(() => dcp.RequestGenerator.AutoRun());
+            AutoRunningList.Remove(guid);
+        }
+    }
+}

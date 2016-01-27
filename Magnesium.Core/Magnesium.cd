@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Magnesium.Core.Magnesium">
+    <Position X="4" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIMAEAAAwQoAAEgAACwAECACAAIAAAQAAAAAKAABAI=</HashCode>
+      <FileName>Magnesium.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_bloomFilter" />
+      <Field Name="_config" />
+      <Field Name="_dcpManager" />
+      <Field Name="_configManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Magnesium.Core.Base.BloomFilter&lt;T&gt;">
+    <Position X="7.25" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="Magnesium.Core.Base.BloomFilter&lt;T&gt;.HashFunction" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Base\BloomFilter.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAIAQAAAAAAAAEAAAAAAAQAQAAEAIAAEQAAABgAQAAg=</HashCode>
+      <FileName>Base\BloomFilter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Magnesium.Core.Config.MagnesiumConfig">
+    <Position X="7.25" Y="5.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACIABAIAIAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Config\MagnesiumConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Magnesium.Core.DcpManager">
+    <Position X="10.25" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAgAAAgAAAwCAAAANAEAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DcpManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Magnesium.Core.Config.ConfigManager">
+    <Position X="10.25" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAIAIAAAgAAAAAAAAACAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Config\ConfigManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

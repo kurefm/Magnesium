@@ -1,0 +1,107 @@
+﻿using Magnesium.Core.Base;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
+using System.Net;
+using Magnesium.Core.Config;
+
+namespace Magnesium.Core
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="dr"></param>
+    /// <param name="targerBlock"></param>
+    internal delegate void DataRequestEventHandler(DataRequest dr, ActionBlock<DataResponse> targerBlock);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="dresp"></param>
+    /// <param name="targerBlock"></param>
+    internal delegate void DataParseEventHandler(DataResponse dresp, ActionBlock<DataContainer> targerBlock);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="dc"></param>
+    internal delegate void DataStoreEventHandler(DataContainer dc);
+
+    public class Magnesium
+    {
+        private static readonly Magnesium instance = new Magnesium();
+
+        static Magnesium() { }
+
+        private Magnesium()
+        {
+            //预设HTTP的最大连接数
+            ServicePointManager.DefaultConnectionLimit = 500;
+            HandleProvider = new DataHandleProvider();
+            //TODO 初始化和加载DCP, _为了能顺利初始化Magnesium, 初始化和加载DCP在构造函数外进行_
+
+
+            RequestQueue = new ActionBlock<DataRequest>(new Action<DataRequest>(HandleProvider.RequestHandler), new ExecutionDataflowBlockOptions() { MaxDegreeOfParallelism = -1 });
+            ParseQueue = new ActionBlock<DataResponse>(new Action<DataResponse>(HandleProvider.ParseHandler));
+            StoreQueue = new ActionBlock<DataContainer>(new Action<DataContainer>(HandleProvider.StoreHandler));
+            //布隆过滤器, 大小10M, 容错率0.001
+            BloomFilter = new BloomFilter<string>(10000000, 0.001f);
+        }
+
+        /// <summary>
+        /// 获取该类的唯一实例
+        /// </summary>
+        public static Magnesium Instance => instance;
+
+        /// <summary>
+        /// 数据处理程序的提供类
+        /// </summary>
+        public DataHandleProvider HandleProvider { get; private set; }
+
+        /// <summary>
+        /// (待)请求队列
+        /// </summary>
+        public ActionBlock<DataRequest> RequestQueue { get; private set; }
+
+        /// <summary>
+        /// (待)解析队列
+        /// </summary>
+        public ActionBlock<DataResponse> ParseQueue { get; private set; }
+
+        /// <summary>
+        /// (待)存储队列
+        /// </summary>
+        public ActionBlock<DataContainer> StoreQueue { get; private set; }
+        /// <summary>
+        /// 布隆过滤器, 仅允许存储URL字符串
+        /// </summary>
+        public BloomFilter<string> BloomFilter { get; private set; }
+
+        /// <summary>
+        /// 配置Magnesium
+        /// </summary>
+        /// <param name="mc">Magnesium配置对象</param>
+        public void LoadConfig(MagnesiumConfig mc)
+        {
+
+        }
+
+        public void LoadDcp(string path)
+        {
+        }
+
+        public void Start()
+        {
+
+        }
+
+
+        private static void MagnesiumInit()
+        {
+
+        }
+    }
+}

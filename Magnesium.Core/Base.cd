@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Magnesium.Core.Web.Http">
+    <Position X="4.75" Y="1" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAYBAAgAAAAAEAAAEAAAAAAAAAABAAgA=</HashCode>
+      <FileName>Web\Http.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Magnesium.Core.Log.Logger">
+    <Position X="4.75" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAYAAAAAACAAAAAAAAAEAAAAAAEAEAAA=</HashCode>
+      <FileName>Log\Logger.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="log" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Magnesium.Core.Base.BloomFilter&lt;T&gt;">
+    <Position X="2.5" Y="1" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="Magnesium.Core.Base.BloomFilter&lt;T&gt;.HashFunction" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Base\BloomFilter.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAIAQAAAAAAAAEAAAAAAAQAQAAEAIAAEQAAABgAQAAg=</HashCode>
+      <FileName>Base\BloomFilter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="log4net.ILog" Collapsed="true">
+    <Position X="7.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

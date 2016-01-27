@@ -1,0 +1,50 @@
+﻿<local:ControlBase x:Class="Magnesium.Wpf.View.RunningInfoPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Magnesium.Wpf.View"
+             xmlns:mdt="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0">
+            <TextBlock Padding="5" DockPanel.Dock="Top" TextBlock.FontSize="20" 
+                TextBlock.Foreground="{DynamicResource HighlightBrush}" Text="Running Infomation"/>
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="5,2"/>
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Setter Property="MinWidth" Value="80"/>
+                    </Style>
+                </Grid.Resources>
+                <TextBlock Text="Request Queue Cache:"/>
+                <TextBlock Grid.Column="1" Text="{Binding Info.RequestQueueCache}"/>
+                <TextBlock Text="Parse Queue Cache:" Grid.Row="1"/>
+                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Info.ParseQueueCache}"/>
+                <TextBlock Text="Store Queue Cache:" Grid.Row="2"/>
+                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Info.StoreQueueCache}"/>
+                <TextBlock Text="Request Count:" Grid.Row="3"/>
+                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Info.RequestCount}"/>
+            </Grid>
+        </DockPanel>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Right" Orientation="Horizontal">
+
+        </StackPanel>
+    </Grid>
+</local:ControlBase>
